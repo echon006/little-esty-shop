@@ -36,10 +36,6 @@ RSpec.describe 'BulkDiscount index page' do
   let!(:bulk_2) {BulkDiscount.create!(percent: 15, threshold: 3, merchant_id: merch_1.id)}
   let!(:bulk_3) {BulkDiscount.create!(percent: 20, threshold: 4, merchant_id: merch_1.id)}
 
-  # before :each do
-  #   visit merchant_bulk_discounts_path(merch_1)
-  # end
-
   it "shows discounts and threshold to reach discount  " do
     visit merchant_bulk_discounts_path(merch_1)
 
@@ -54,4 +50,11 @@ RSpec.describe 'BulkDiscount index page' do
     click_on "Discount id: #{bulk_1.id}"
     expect(current_path).to eq("/merchants/#{merch_1.id}/bulk_discounts/#{bulk_1.id}")
   end
+
+  it 'has link to create new discount page (new page with a form to create)' do
+  visit merchant_bulk_discounts_path(merch_1)
+  expect(page).to have_button("New Discount")
+  click_button("New Discount")
+  expect(current_path).to eq("/merchants/#{merch_1.id}/bulk_discounts/new")
+end
 end
