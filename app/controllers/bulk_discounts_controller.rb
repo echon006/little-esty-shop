@@ -9,6 +9,11 @@ class BulkDiscountsController < ApplicationController
   end
 
   def new
+    @merchant = Merchant.find(params[:merchant_id])
+  end
 
+  def create
+    
+    redirect_to "merchant_bulk_discounts_path(#{@merchant})"
   end
 end
