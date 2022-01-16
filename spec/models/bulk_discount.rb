@@ -10,4 +10,5 @@ RSpec.describe BulkDiscount, type: :model do
     it { should validate_presence_of(:threshold) }
     it { should validate_presence_of(:merchant_id) }
   end
+
 end

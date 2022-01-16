@@ -65,15 +65,15 @@ RSpec.describe 'merchant dashboard page', type: :feature do
     describe 'view links' do
       it "displays link to merchant item index " do
         expect(page).to have_link("Merchant Items")
-        
+
         click_link "Merchant Items"
-        
+
         expect(current_path).to eq(merchant_items_path(merch_1))
       end
 
       it "displays link to merchant invoices index" do
         expect(page).to have_link("Merchant Invoices")
-        
+
         click_link "Merchant Invoices"
 
         expect(current_path).to eq(merchant_invoices_path(merch_1))
@@ -109,13 +109,18 @@ RSpec.describe 'merchant dashboard page', type: :feature do
 
       it "has a link for the invoice id that leads to the invoice show page" do
         click_link "#{item_2.invoices.ids.first}"
-        
+
         expect(current_path).to eq("/merchants/#{merch_1.id}/invoices/#{item_2.invoices.ids.first}")
       end
 
       it "shows the items in order of invoice tiem created" do
         expect(item_2.name).to appear_before(item_5.name)
         expect(item_5.name).to appear_before(item_3.name)
+      end
+
+      it "checks for the discount link " do
+        click_link "View Discounts"
+        expect(current_path).to eq("/merchants/#{merch_1.id}/bulk_discounts")
       end
     end
   end
