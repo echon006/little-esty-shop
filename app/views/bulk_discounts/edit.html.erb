@@ -1,0 +1,9 @@
+<%=  form_with model: [:merchant, @bulk], local: true do |f| %>
+<%= f.label :percent %>
+<%= f.text_field :percent, value: @bulk.percent%>
+<br>
+<%= f.label :threshold %>
+<%= f.text_field :threshold, value: @bulk.threshold %>
+<br>
+<%= f.submit "Update discount" %>
+  <% end  %>
