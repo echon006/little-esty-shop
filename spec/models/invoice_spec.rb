@@ -153,6 +153,10 @@ RSpec.describe Invoice, type: :model do
         # bulk_2 = BulkDiscount.create!(percent: 15, threshold: 3, merchant_id: merch_1.id)
 
         expect(invoice_1.total_revenue).to eq('$10.00')
+        # expect(invoice_1.discounted_amount).to eq('$1.00')
+        expect(invoice_1.discounted_amount).to eq(100)
+        expect(invoice_1.total_revenue_as_integer).to eq(1000)
+
         expect(invoice_1.discounted_revenue).to eq('$9.00')
       end
     end

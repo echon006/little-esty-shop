@@ -34,7 +34,20 @@ class Invoice < ApplicationRecord
     cents_to_dollars(invoice_items.sum('unit_price * quantity'))
   end
 
-  def discounted_revenue
-    invoice_items.joins(:bulk_discounts)
+  def discounted_amount
+    (invoice_items.joins(:bulk_discounts)
+                    .where('invoice_items.quantity >= bulk_discounts.threshold')
+                    .select('invoice_items.id, max(invoice_items.unit_price * invoice_items.quantity * (bulk_discounts.percent / 100.0)) as best_discount')
+                    .group('invoice_items.id')
+                    .sum(&:best_discount))
   end
+
+  def total_revenue_as_integer
+    (invoice_items.sum('unit_price * quantity'))
+  end
+
+  def discounted_revenue
+    cents_to_dollars(total_revenue_as_integer - discounted_amount)
+  end
+
 end
