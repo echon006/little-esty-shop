@@ -33,4 +33,8 @@ class Invoice < ApplicationRecord
   def total_revenue
     cents_to_dollars(invoice_items.sum('unit_price * quantity'))
   end
+
+  def discounted_revenue
+    invoice_items.joins(:bulk_discounts)
+  end
 end

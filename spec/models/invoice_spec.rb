@@ -137,11 +137,17 @@ RSpec.describe Invoice, type: :model do
 
     describe 'discounted revenue' do
       it "retrurns a discounted revenue" do
-        merch_1 = Merchant.create!(name: 'name_1')
+        merch_1 = Merchant.create!(name: 'Merch 1')
 
-        invoice_1 = create(:invoice)
-        item_1 = create(:item)
-        invoice_item_1 = create(:invoice_item, item: item_1, invoice: invoice_1, unit_price: 100, quantity: 10)
+        item_1 = Item.create!(name: "Item 1", description: "Description 1", unit_price: 10, merchant_id: merch_1.id)
+        item_2 = Item.create!(name: "Item 2", description: "Description 2", unit_price: 8, merchant_id: merch_1.id)
+
+        customer_1 = Customer.create!(first_name: 'Cust first 1', last_name: 'Cust last 1')
+        invoice_1 = Invoice.create!(customer_id: customer_1.id, status: 2)
+        ii_1 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_1.id, quantity: 100, unit_price: 10, status: 1)
+        # ii_2 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_2.id, quantity: 500, unit_price: 10, status: 2)
+
+        transaction_1 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: invoice_1.id)
 
         bulk_1 = BulkDiscount.create!(percent: 10, threshold: 10, merchant_id: merch_1.id)
         # bulk_2 = BulkDiscount.create!(percent: 15, threshold: 3, merchant_id: merch_1.id)

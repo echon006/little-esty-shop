@@ -57,6 +57,7 @@ let!(:merch_1) { Merchant.create!(name: 'name_1') }
     it { should have_many(:invoices).through(:invoice_items) }
     it { should have_many(:customers).through(:invoices) }
     it { should have_many(:transactions).through(:invoices) }
+    it { should have_many(:bulk_discounts).through(:merchant) }
   end
 
   describe 'validations' do
