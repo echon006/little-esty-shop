@@ -63,7 +63,7 @@ RSpec.describe 'BulkDiscount index page' do
     expect(page).to have_content(bulk_1.threshold)
 
     click_on "Delete discount #{bulk_1.id}"
-    save_and_open_page
+    
     expect(page).not_to have_content(bulk_1.percent)
     expect(page).not_to have_content("Threshold: #{bulk_1.threshold}")
 
