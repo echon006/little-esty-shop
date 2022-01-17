@@ -120,8 +120,8 @@ RSpec.describe 'merchant invoice show page', type: :feature do
       end
 
       describe 'discounted revenue' do
-        it "retrurns a discounted revenue" do
-          expect(page).to have_content
+        it "shows a discounted revenue" do
+          expect(page).to have_content("Discounted Revenue: #{invoice_1.discounted_revenue}")
         end
       end
     end
