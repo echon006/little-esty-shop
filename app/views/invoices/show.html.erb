@@ -4,6 +4,7 @@
   <li>Status: <%= @invoice.status %></li>
   <li>Created On: <%= @invoice.created_at_formatted %></li>
   <li>Total Revenue: <%= @invoice.total_revenue %></li>
+  <li></li>
 </ul>
 <h2>Customer:</h2>
 <p><%= @invoice.customer_full_name %></p>
@@ -17,7 +18,7 @@
   </tr>
   <% @invoice.invoice_items.each do |ii| %>
     <tr id="item-<%= ii.item_id %>">
-      <td><%= ii.item.name %></td>  
+      <td><%= ii.item.name %></td>
       <td><%= ii.quantity %></td>
       <td><%= ii.unit_price %></td>
       <%= form_with model: [@merchant, ii], local: true do |f| %>

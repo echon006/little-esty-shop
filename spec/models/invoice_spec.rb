@@ -8,11 +8,11 @@ RSpec.describe Invoice, type: :model do
     it { should have_many(:transactions) }
     it { should have_many(:merchants).through(:items) }
   end
-  
+
   describe 'validations' do
     it { should define_enum_for(:status).with(['in progress', 'cancelled', 'completed']) }
   end
-  
+
   let!(:merch_1) { Merchant.create!(name: 'name_1') }
 
   let!(:cust_1) { Customer.create!(first_name: 'fn_1', last_name: 'ln_1') }
@@ -64,6 +64,8 @@ RSpec.describe Invoice, type: :model do
   let!(:transactions_11) { Transaction.create!(invoice_id: invoice_6.id, credit_card_number: "4654405418240011", credit_card_expiration_date: "0011", result: 2)}
   let!(:transactions_12) { Transaction.create!(invoice_id: invoice_6.id, credit_card_number: "4654405418240012", credit_card_expiration_date: "0012", result: 1)}
 
+  let!(:bulk_1) {BulkDiscount.create!(percent: 10, threshold: 2, merchant_id: merch_1.id)}
+  let!(:bulk_2) {BulkDiscount.create!(percent: 15, threshold: 3, merchant_id: merch_1.id)}
 
   describe 'class methods' do
     describe '::incomplete_list' do
@@ -133,5 +135,20 @@ RSpec.describe Invoice, type: :model do
       end
     end
 
+    describe 'discounted revenue' do
+      it "retrurns a discounted revenue" do
+        merch_1 = Merchant.create!(name: 'name_1')
+
+        invoice_1 = create(:invoice)
+        item_1 = create(:item)
+        invoice_item_1 = create(:invoice_item, item: item_1, invoice: invoice_1, unit_price: 100, quantity: 10)
+
+        bulk_1 = BulkDiscount.create!(percent: 10, threshold: 10, merchant_id: merch_1.id)
+        # bulk_2 = BulkDiscount.create!(percent: 15, threshold: 3, merchant_id: merch_1.id)
+
+        expect(invoice_1.total_revenue).to eq('$10.00')
+        expect(invoice_1.discounted_revenue).to eq('$9.00')
+      end
+    end
   end
 end
