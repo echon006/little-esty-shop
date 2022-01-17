@@ -33,7 +33,7 @@ class BulkDiscountsController < ApplicationController
   def update
     @merchant = Merchant.find(params[:merchant_id])
     @bulk = @merchant.bulk_discounts.find(params[:id])
-    @bulk.update(bulk_params)
+    @bulk.update!(percent: params[:percent], threshold: params[:threshold])
     @bulk.save
     redirect_to "/merchants/#{@merchant.id}/bulk_discounts/#{@bulk.id}"
   end
