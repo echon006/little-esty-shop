@@ -21,6 +21,7 @@
       <td><%= ii.item.name %></td>
       <td><%= ii.quantity %></td>
       <td><%= ii.unit_price %></td>
+      
       <%= form_with model: [@merchant, ii], local: true do |f| %>
         <td><%= f.select :status, ['pending', 'packaged', 'shipped'] %> <%= f.submit 'Update Item Status' %></td>
       <% end %>

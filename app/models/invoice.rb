@@ -5,6 +5,7 @@ class Invoice < ApplicationRecord
   has_many :items, through: :invoice_items
   has_many :transactions
   has_many :merchants, through: :items
+  has_many :bulk_discounts, through: :invoice_items
 
   enum status: ['in progress', 'cancelled', 'completed']
 
@@ -36,10 +37,10 @@ class Invoice < ApplicationRecord
 
   def discounted_amount
     (invoice_items.joins(:bulk_discounts)
-                    .where('invoice_items.quantity >= bulk_discounts.threshold')
-                    .select('invoice_items.id, max(invoice_items.unit_price * invoice_items.quantity * (bulk_discounts.percent / 100.0)) as best_discount')
-                    .group('invoice_items.id')
-                    .sum(&:best_discount))
+                  .where('invoice_items.quantity >= bulk_discounts.threshold')
+                  .select('invoice_items.id, max(invoice_items.unit_price * invoice_items.quantity * (bulk_discounts.percent / 100.0)) as best_discount')
+                  .group('invoice_items.id')
+                  .sum(&:best_discount))
   end
 
   def total_revenue_as_integer

@@ -20,5 +20,17 @@ class Item < ApplicationRecord
             .created_at.strftime("%B %d, %Y")
   end
 
+  def best_discount_for_item(quantity)
+    bulk_discounts.where('? >= bulk_discounts.threshold', quantity)
+                  .order(percent: :desc).first
+  end
+
+  # def best_discount_for_item
+  #   require "pry"; binding.pry
+  #    item.bulk_discounts
+  #        .where('invoice_items.quantity >= bulk_discounts.threshold')
+  #        # .select('bulk_discounts.id, invoice_items.id, max(bulk_discounts.percent)')
+  #        # .group('bulk_discounts.id,  invoice_items.id')
+  # end
 
 end

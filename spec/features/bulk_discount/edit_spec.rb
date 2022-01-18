@@ -25,7 +25,6 @@ RSpec.describe 'Bulk discount Edit page' do
 
     expect(current_path).to eq("/merchants/#{merch_1.id}/bulk_discounts/#{bulk_1.id}")
 
-    save_and_open_page
     expect(page).to have_content("Discount percent: 7")
     expect(page).to have_content("Amount needed to recieve discount: 9")
   end
