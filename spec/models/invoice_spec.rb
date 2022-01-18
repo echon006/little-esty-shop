@@ -180,6 +180,8 @@ RSpec.describe Invoice, type: :model do
         expect(invoice_1.total_revenue_as_integer).to eq(1000)
         expect(invoice_1.discounted_revenue).to eq('$8.50')
       end
+
+
     end
   end
 end

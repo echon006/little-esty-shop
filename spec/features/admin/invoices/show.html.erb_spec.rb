@@ -73,4 +73,8 @@ RSpec.describe 'admin invoices index dashboard page', type: :feature do
 
     expect(page).to have_select('invoice_status', selected: 'in progress')
   end
+
+  it "shows the total discounted revenue of the invoice" do
+    expect(page).to have_content(invoice_1.discounted_revenue)
+  end
 end
