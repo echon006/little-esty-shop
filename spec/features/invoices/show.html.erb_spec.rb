@@ -127,6 +127,7 @@ RSpec.describe 'merchant invoice show page', type: :feature do
         end
       end
 
+
       it "has a link to the discount applied show page" do
 
         merch_10 = Merchant.create!(name: 'Merch 1')
@@ -137,6 +138,7 @@ RSpec.describe 'merchant invoice show page', type: :feature do
         customer_10 = Customer.create!(first_name: 'Cust first 1', last_name: 'Cust last 1')
         invoice_10 = Invoice.create!(customer_id: customer_10.id, status: 2)
         ii_10 = InvoiceItem.create!(invoice_id: invoice_10.id, item_id: item_10.id, quantity: 100, unit_price: 10, status: 1)
+        ii_20 = InvoiceItem.create!(invoice_id: invoice_10.id, item_id: item_20.id, quantity: 9, unit_price: 20, status: 1)
         # ii_2 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_2.id, quantity: 500, unit_price: 10, status: 2)
 
         transaction_10 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: invoice_10.id)
@@ -146,7 +148,6 @@ RSpec.describe 'merchant invoice show page', type: :feature do
         bulk_30 = merch_10.bulk_discounts.create!(percent: 20, threshold: 110)
 
         visit "/merchants/#{merch_10.id}/invoices/#{invoice_10.id}"
-        save_and_open_page
 
         expect(ii_10.item.best_discount_for_item(ii_10.quantity).id).to eq(bulk_20.id)
         click_link("Discount id: #{bulk_20.id}")
@@ -154,9 +155,49 @@ RSpec.describe 'merchant invoice show page', type: :feature do
       end
 
       it "checks within the clocks for a link to the specific discount" do
-        within("#item-#{item_1.id}") do
-          expect(page).to have_link("Discount id: #{bulk_2.id}")
+        merch_10 = Merchant.create!(name: 'Merch 1')
+
+        item_10 = Item.create!(name: "Item 1", description: "Description 1", unit_price: 10, merchant_id: merch_10.id)
+        item_20 = Item.create!(name: "Item 2", description: "Description 2", unit_price: 8, merchant_id: merch_10.id)
+
+        customer_10 = Customer.create!(first_name: 'Cust first 1', last_name: 'Cust last 1')
+        invoice_10 = Invoice.create!(customer_id: customer_10.id, status: 2)
+        ii_10 = InvoiceItem.create!(invoice_id: invoice_10.id, item_id: item_10.id, quantity: 100, unit_price: 10, status: 1)
+        ii_20 = InvoiceItem.create!(invoice_id: invoice_10.id, item_id: item_20.id, quantity: 9, unit_price: 20, status: 1)
+        # ii_2 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_2.id, quantity: 500, unit_price: 10, status: 2)
+
+        transaction_10 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: invoice_10.id)
+
+        bulk_10 = merch_10.bulk_discounts.create!(percent: 10, threshold: 10)
+        bulk_20 = merch_10.bulk_discounts.create!(percent: 15, threshold: 80)
+        bulk_30 = merch_10.bulk_discounts.create!(percent: 20, threshold: 110)
+
+        visit "/merchants/#{merch_10.id}/invoices/#{invoice_10.id}"
+
+        within("#item-#{item_10.id}") do
+          expect(page).to have_link("Discount id: #{bulk_20.id}")
         end
+      end
+
+      it "checks within the clocks for a link to the specific discount" do
+        merch_10 = Merchant.create!(name: 'Merch 1')
+
+        item_10 = Item.create!(name: "Item 1", description: "Description 1", unit_price: 10, merchant_id: merch_10.id)
+        item_20 = Item.create!(name: "Item 2", description: "Description 2", unit_price: 8, merchant_id: merch_10.id)
+
+        customer_10 = Customer.create!(first_name: 'Cust first 1', last_name: 'Cust last 1')
+        invoice_10 = Invoice.create!(customer_id: customer_10.id, status: 2)
+        ii_10 = InvoiceItem.create!(invoice_id: invoice_10.id, item_id: item_10.id, quantity: 100, unit_price: 10, status: 1)
+        ii_20 = InvoiceItem.create!(invoice_id: invoice_10.id, item_id: item_20.id, quantity: 9, unit_price: 20, status: 1)
+        # ii_2 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_2.id, quantity: 500, unit_price: 10, status: 2)
+        transaction_10 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: invoice_10.id)
+
+        bulk_10 = merch_10.bulk_discounts.create!(percent: 10, threshold: 10)
+        bulk_20 = merch_10.bulk_discounts.create!(percent: 15, threshold: 80)
+        bulk_30 = merch_10.bulk_discounts.create!(percent: 20, threshold: 110)
+
+        visit "/merchants/#{merch_10.id}/invoices/#{invoice_10.id}"
+          expect(page).to have_content("Best discount available: none")
       end
     end
   end

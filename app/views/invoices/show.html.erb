@@ -24,7 +24,7 @@
       <%= form_with model: [@merchant, ii], local: true do |f| %>
         <td><%= f.select :status, ['pending', 'packaged', 'shipped'] %> <%= f.submit 'Update Item Status' %></td>
       <% end %>
-      <td> Best discount availible:
+      <td> Best discount available:
         <% if ii.item.best_discount_for_item(ii.quantity).nil? %>
           none
         <% else %>
