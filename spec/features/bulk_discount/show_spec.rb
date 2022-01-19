@@ -19,4 +19,7 @@ RSpec.describe 'Bulk discount Show page' do
     click_link("Edit")
     expect(current_path).to eq("/merchants/#{merch_1.id}/bulk_discounts/#{bulk_1.id}/edit")
   end
+
+
+
 end

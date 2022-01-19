@@ -21,10 +21,15 @@
       <td><%= ii.item.name %></td>
       <td><%= ii.quantity %></td>
       <td><%= ii.unit_price %></td>
-      
       <%= form_with model: [@merchant, ii], local: true do |f| %>
         <td><%= f.select :status, ['pending', 'packaged', 'shipped'] %> <%= f.submit 'Update Item Status' %></td>
       <% end %>
+      <td> Best discount availible:
+        <% if ii.item.best_discount_for_item(ii.quantity).nil? %>
+          none
+        <% else %>
+          <%= link_to "Discount id: #{ii.item.best_discount_for_item(ii.quantity).id}",  "/merchants/#{@merchant.id}/bulk_discounts/#{ii.item.best_discount_for_item(ii.quantity).id}" %>
+        <% end %> </td>
     </tr>
   <% end %>
 </table>

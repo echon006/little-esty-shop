@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+merchant_1 = Merchant.first
+bulk1 = merchant_1.bulk_discounts.create!(percent: 10, threshold: 10)
+bulk2 = merchant_1.bulk_discounts.create!(percent: 15, threshold: 13)
+bulk3 = merchant_1.bulk_discounts.create!(percent: 20, threshold: 110)
