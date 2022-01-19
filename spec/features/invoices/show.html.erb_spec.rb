@@ -71,6 +71,7 @@ RSpec.describe 'merchant invoice show page', type: :feature do
 
       it 'displays a status dropdown and update button' do
         within("#item-#{item_1.id}") do
+
           expect(page).to have_select('invoice_item_status', options: ['pending', 'packaged', 'shipped'], selected: 'pending')
 
           expect(page).to have_button('Update Item Status')
@@ -145,10 +146,17 @@ RSpec.describe 'merchant invoice show page', type: :feature do
         bulk_30 = merch_10.bulk_discounts.create!(percent: 20, threshold: 110)
 
         visit "/merchants/#{merch_10.id}/invoices/#{invoice_10.id}"
+        save_and_open_page
 
         expect(ii_10.item.best_discount_for_item(ii_10.quantity).id).to eq(bulk_20.id)
         click_link("Discount id: #{bulk_20.id}")
         expect(current_path).to eq("/merchants/#{merch_10.id}/bulk_discounts/#{bulk_20.id}")
+      end
+
+      it "checks within the clocks for a link to the specific discount" do
+        within("#item-#{item_1.id}") do
+          expect(page).to have_link("Discount id: #{bulk_2.id}")
+        end
       end
     end
   end

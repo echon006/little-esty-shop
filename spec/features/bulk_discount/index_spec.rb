@@ -69,4 +69,5 @@ RSpec.describe 'BulkDiscount index page' do
 
     expect(current_path).to eq(merchant_bulk_discounts_path(merch_1))
   end
+
 end
